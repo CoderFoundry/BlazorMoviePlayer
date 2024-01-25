@@ -1,0 +1,108 @@
+﻿@page "/";
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+
+<div class="container-fluid p-3">
+    <div class="row align-items-center justify-content-center">        
+        <div class="col-12 p-0 mb-5 text-center">
+            <div class="title" >Now Playing: @movieTitle</div>
+            <div class="p-2">    
+                <video controls id="videoPlayer" poster="/images/videoPoster.png">
+                </video>
+            </div>
+        </div>
+        <div class="col-12 d-flex align-items-center justify-content-center">
+            <div class="d-flex align-items-center justify-content-center w-75 gap-4 cardList">
+                @foreach (var item in movies)
+                {
+                    <MovieCard Movie="item" OnPlayCallBack="@playMovie" />
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+
+   
+    private List<Movie> movies = new();
+    private string movieTitle = "Skate Bros";
+    private string movieFile = "SkateBros.mp4";
+    private IJSObjectReference? module;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            module = await JS.InvokeAsync<IJSObjectReference>(
+              "import", "./Components/Pages/MoviePlayer.razor.js");
+
+            // to call the function to play the movie
+            await module.InvokeVoidAsync("loadMovie", "SkateBros.mp4");
+
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        movies.Add(new Movie()
+         {
+              Title = "Skate Bros",
+              Poster = "SkateBros.png",
+              Video = "SkateBros.mp4"
+         });
+
+        movies.Add(new Movie()
+            {
+                Title = "Before the Storm",
+                Poster = "CalmingWaves.png",
+                Video = "CalmingWaves.mp4"
+            });
+
+        movies.Add(new Movie()
+            {
+                Title = "Mustang Sally",
+                Poster = "MustangSally.png",
+                Video = "MustangSally.mp4"
+            });
+
+        movies.Add(new Movie()
+        {
+                Title = "The Sixth Element",
+                Poster = "TheSixthElement.png",
+                Video = "TheSixthElement.mp4"
+        });
+
+        movies.Add(new Movie()
+            {
+                Title = "Cyber City 2045",
+                Poster = "Cyber2045.png",
+                Video = "Cyber2045.mp4"
+            });
+
+        movies.Add(new Movie()
+            {
+                Title = "Zero Hour",
+                Poster = "DestinyZeroHour.png",
+                Video = "DestinyZeroHour.mp4"
+            });
+    }
+
+    private async void playMovie(Movie movie)
+    {
+        movieTitle = movie.Title;  
+        movieFile = movie.Video;
+
+        // to call the function to play the movie
+        await module.InvokeVoidAsync("playMovie", movieFile);
+    }
+
+    async ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        if (module is not null)
+        {
+            await module.DisposeAsync();
+        }
+    }
+}

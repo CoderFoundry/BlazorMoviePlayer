@@ -1,0 +1,32 @@
+﻿@if (Movie is not null)
+{
+    <div class="hc-wrapper">
+        <div class="hc-card">
+            <picture>
+                <img src="/Images/@Movie.Poster" />
+            </picture>
+            <div class="hc-content vstack justify-content-end">
+                <p class="text-center">
+                    @Movie.Title
+                </p>
+                <button type="button" class="btn btn-glass" @onclick="playMovie">
+                    Play
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public Movie? Movie { get; set; }
+
+    [Parameter]
+    public EventCallback<Movie> OnPlayCallBack { get; set; }
+
+    private async Task playMovie()
+
+    {
+        await OnPlayCallBack.InvokeAsync(Movie);
+    }
+}

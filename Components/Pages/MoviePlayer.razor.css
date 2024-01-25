@@ -1,0 +1,30 @@
+﻿video {
+    /* override other styles to make responsive */
+    max-width: 750px;    
+    width: 100% !important;   
+    border-radius: 25px;
+    padding: 5px;
+    border: 1px solid #000000;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+.videobg {
+    max-width: 750px;
+}
+
+.title {
+    font-family: var(--cf-title-font);
+    font-size: 1rem;    
+}
+.cardList {    
+    overflow: hidden;
+    overflow-x: scroll;   
+    padding-bottom: 25px;
+}
+
+@media (min-width: 768px) {
+    .title {
+        font-family: var(--cf-title-font);
+        font-size: 1.5rem;
+    }
+}
