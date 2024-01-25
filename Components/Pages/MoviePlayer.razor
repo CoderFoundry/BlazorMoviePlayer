@@ -4,15 +4,14 @@
 
 <div class="container-fluid p-3">
     <div class="row align-items-center justify-content-center">        
-        <div class="col-12 p-0 mb-5 text-center">
-            <div class="title" >Now Playing: @movieTitle</div>
-            <div class="p-2">    
+        <div class="col-12 p-0 mb-5 ">            
+            <div class="p-2 d-flex align-items-center justify-content-center">    
                 <video controls id="videoPlayer" poster="/images/videoPoster.png">
                 </video>
-            </div>
+            </div>            
         </div>
         <div class="col-12 d-flex align-items-center justify-content-center">
-            <div class="d-flex align-items-center justify-content-center w-75 gap-4 cardList">
+            <div id="scrollbar" class="hstack gap-4 cardList">
                 @foreach (var item in movies)
                 {
                     <MovieCard Movie="item" OnPlayCallBack="@playMovie" />
@@ -38,7 +37,7 @@
             module = await JS.InvokeAsync<IJSObjectReference>(
               "import", "./Components/Pages/MoviePlayer.razor.js");
 
-            // to call the function to play the movie
+            //call the function to play the movie
             await module.InvokeVoidAsync("loadMovie", "SkateBros.mp4");
 
         }

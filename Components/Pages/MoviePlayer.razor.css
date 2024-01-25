@@ -16,15 +16,35 @@
     font-family: var(--cf-title-font);
     font-size: 1rem;    
 }
-.cardList {    
-    overflow: hidden;
-    overflow-x: scroll;   
-    padding-bottom: 25px;
+.cardList {
+    overflow: auto;
+    padding: 25px;
+   
+}
+
+/*       ScrollBar 6        */
+#scrollbar::-webkit-scrollbar {
+    width: 12px;
+}
+
+#scrollbar::-webkit-scrollbar-track {
+    border-radius: 8px;
+    background-color: #95a5a6;
+    border: 1px solid #cacaca;
+}
+
+#scrollbar::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: #ff993b;
 }
 
 @media (min-width: 768px) {
     .title {
         font-family: var(--cf-title-font);
         font-size: 1.5rem;
+    }
+    .cardList {
+        margin-left: 3rem;
+        margin-right: 3rem;
     }
 }
