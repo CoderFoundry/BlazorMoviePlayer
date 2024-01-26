@@ -1,15 +1,13 @@
-﻿export function playMovie(fileName) {
-    
-    let vplayer = document.getElementById("videoPlayer");
-    vplayer.src = `/Videos/${fileName}`;   
-    vplayer.load();       
-    vplayer.play();
+﻿export function playMovie(fileName, videoElement) {   
+    videoElement.src = `/Videos/${fileName}`;     
+    videoElement.volume = .3;
+    videoElement.play();
 }
 
-export function loadMovie(fileName) {
-    let vplayer = document.getElementById("videoPlayer");
-    vplayer.src = `/Videos/${fileName}`;
-    vplayer.load();
+export function loadMovie(fileName, videoElement) {    
+    videoElement.src = `/Videos/${fileName}`;    
+    videoElement.volume = .3;
+    videoElement.load();
 }
 
 

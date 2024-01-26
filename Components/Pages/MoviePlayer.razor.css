@@ -1,15 +1,35 @@
 ﻿video {
     /* override other styles to make responsive */
-    max-width: 750px;    
-    width: 100% !important;   
+    max-width: 750px;
+    width: 100% !important;
+    height: 100% !important;
     border-radius: 25px;
     padding: 5px;
     border: 1px solid #000000;
     box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
 }
 
-.videobg {
-    max-width: 750px;
+.outer-container {    
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+.inner-container {    
+    display: inline-block;
+    position: relative;
+}
+
+.video-overlay {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    margin: 10px;
+    padding: 5px 5px;
+    font-size: 1rem;
+    font-family: var(--cf-title-font);
+    color: #FFF;
+    background-color: rgba(50, 50, 50, 0.3);
 }
 
 .title {

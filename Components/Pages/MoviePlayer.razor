@@ -4,12 +4,19 @@
 
 <div class="container-fluid p-3">
     <div class="row align-items-center justify-content-center">        
+        
         <div class="col-12 p-0 mb-5 ">            
             <div class="p-2 d-flex align-items-center justify-content-center">    
-                <video controls id="videoPlayer" poster="/images/videoPoster.png">
-                </video>
+                <div class="outer-container">
+                    <div class="inner-container">
+                        <div class="video-overlay">Now Playing: @movieTitle</div>
+                        <video @ref=videoPlayer controls id="videoPlayer" poster="/images/videoPoster.png">
+                        </video>
+                    </div>
+                </div>
             </div>            
         </div>
+        
         <div class="col-12 d-flex align-items-center justify-content-center">
             <div id="scrollbar" class="hstack gap-4 cardList">
                 @foreach (var item in movies)
@@ -24,8 +31,9 @@
 
 @code {
 
-   
+
     private List<Movie> movies = new();
+    private ElementReference videoPlayer;
     private string movieTitle = "Skate Bros";
     private string movieFile = "SkateBros.mp4";
     private IJSObjectReference? module;
@@ -38,19 +46,41 @@
               "import", "./Components/Pages/MoviePlayer.razor.js");
 
             //call the function to play the movie
-            await module.InvokeVoidAsync("loadMovie", "SkateBros.mp4");
+            await module.InvokeVoidAsync("loadMovie", "SkateBros.mp4", videoPlayer);
 
         }
     }
 
     protected override void OnInitialized()
     {
+        getMovies();
+    }
+
+    private async void playMovie(Movie movie)
+    {
+        movieTitle = movie.Title;  
+        movieFile = movie.Video;
+
+        // to call the function to play the movie
+        await module.InvokeVoidAsync("playMovie", movieFile, videoPlayer);
+    }
+
+    async ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        if (module is not null)
+        {
+            await module.DisposeAsync();
+        }
+    }
+
+    private void getMovies()
+    {
         movies.Add(new Movie()
-         {
-              Title = "Skate Bros",
-              Poster = "SkateBros.png",
-              Video = "SkateBros.mp4"
-         });
+            {
+                Title = "Skate Bros",
+                Poster = "SkateBros.png",
+                Video = "SkateBros.mp4"
+            });
 
         movies.Add(new Movie()
             {
@@ -67,11 +97,11 @@
             });
 
         movies.Add(new Movie()
-        {
+            {
                 Title = "The Sixth Element",
                 Poster = "TheSixthElement.png",
                 Video = "TheSixthElement.mp4"
-        });
+            });
 
         movies.Add(new Movie()
             {
@@ -86,22 +116,5 @@
                 Poster = "DestinyZeroHour.png",
                 Video = "DestinyZeroHour.mp4"
             });
-    }
-
-    private async void playMovie(Movie movie)
-    {
-        movieTitle = movie.Title;  
-        movieFile = movie.Video;
-
-        // to call the function to play the movie
-        await module.InvokeVoidAsync("playMovie", movieFile);
-    }
-
-    async ValueTask IAsyncDisposable.DisposeAsync()
-    {
-        if (module is not null)
-        {
-            await module.DisposeAsync();
-        }
     }
 }
