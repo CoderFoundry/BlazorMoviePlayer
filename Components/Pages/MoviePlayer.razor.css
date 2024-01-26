@@ -24,7 +24,8 @@
     position: absolute;
     left: 0px;
     top: 0px;
-    margin: 10px;
+    border-radius: 25px;
+    margin: 10px 0px 0px 15px;
     padding: 5px 5px;
     font-size: 1rem;
     font-family: var(--cf-title-font);

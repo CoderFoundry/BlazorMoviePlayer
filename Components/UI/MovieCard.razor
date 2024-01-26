@@ -1,7 +1,7 @@
 ﻿@if (Movie is not null)
 {
     <div class="hc-wrapper">
-        <div class="hc-card">
+        <div class="hc-card @(NowPlayingMovie == Movie.Title ? "selected" : "")">
             <picture>
                 <img src="/Images/@Movie.Poster" />
             </picture>
@@ -18,12 +18,20 @@
 }
 
 @code {
+
+
     [Parameter]
+    [EditorRequired]
     public Movie? Movie { get; set; }
+
+    [Parameter ]
+    public string? NowPlayingMovie { get; set; }
 
     [Parameter]
     public EventCallback<Movie> OnPlayCallBack { get; set; }
+   
 
+   
     private async Task playMovie()
 
     {

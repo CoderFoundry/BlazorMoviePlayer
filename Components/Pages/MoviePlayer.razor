@@ -3,25 +3,23 @@
 @inject IJSRuntime JS
 
 <div class="container-fluid p-3">
-    <div class="row align-items-center justify-content-center">        
-        
+    <div class="row align-items-center justify-content-center"> 
         <div class="col-12 p-0 mb-5 ">            
             <div class="p-2 d-flex align-items-center justify-content-center">    
                 <div class="outer-container">
                     <div class="inner-container">
-                        <div class="video-overlay">Now Playing: @movieTitle</div>
+                        <div class="video-overlay rounded">Now Playing: @nowPlayingMovie?.Title</div>
                         <video @ref=videoPlayer controls id="videoPlayer" poster="/images/videoPoster.png">
                         </video>
                     </div>
                 </div>
             </div>            
-        </div>
-        
+        </div>        
         <div class="col-12 d-flex align-items-center justify-content-center">
             <div id="scrollbar" class="hstack gap-4 cardList">
                 @foreach (var item in movies)
                 {
-                    <MovieCard Movie="item" OnPlayCallBack="@playMovie" />
+                    <MovieCard Movie="item" OnPlayCallBack="@playMovie" NowPlayingMovie="@nowPlayingMovie?.Title"   />
                 }
             </div>
         </div>
@@ -33,38 +31,48 @@
 
 
     private List<Movie> movies = new();
+    private Movie? nowPlayingMovie;
     private ElementReference videoPlayer;
-    private string movieTitle = "Skate Bros";
-    private string movieFile = "SkateBros.mp4";
-    private IJSObjectReference? module;
+    private IJSObjectReference? module; 
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
+            //import the js module
             module = await JS.InvokeAsync<IJSObjectReference>(
               "import", "./Components/Pages/MoviePlayer.razor.js");
 
-            //call the function to play the movie
-            await module.InvokeVoidAsync("loadMovie", "SkateBros.mp4", videoPlayer);
+            //call the function to load the movie
+            await module.InvokeVoidAsync("loadMovie", nowPlayingMovie.Video, videoPlayer);
 
         }
     }
-
     protected override void OnInitialized()
     {
         getMovies();
+
+        //set the active movie
+        if (nowPlayingMovie is null)
+        {
+            nowPlayingMovie = movies[0];
+        }
+        
     }
 
     private async void playMovie(Movie movie)
     {
-        movieTitle = movie.Title;  
-        movieFile = movie.Video;
+        if (module is not null && movie is not null)
+        {
+            nowPlayingMovie = movie;     
 
-        // to call the function to play the movie
-        await module.InvokeVoidAsync("playMovie", movieFile, videoPlayer);
+            //call the js function to play the movie
+            await module.InvokeVoidAsync("playMovie", nowPlayingMovie.Video, videoPlayer);
+        }
+        
     }
 
+    //Dispose of the js module
     async ValueTask IAsyncDisposable.DisposeAsync()
     {
         if (module is not null)
@@ -73,6 +81,7 @@
         }
     }
 
+    //Add movies to the list
     private void getMovies()
     {
         movies.Add(new Movie()

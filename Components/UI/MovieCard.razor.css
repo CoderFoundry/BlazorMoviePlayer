@@ -25,6 +25,19 @@
     transition: 0.4s ease-out;
 }
 
+.selected{
+    border: 3px solid var(--cf-theme-core);
+}
+
+    .hc-card .hc-content {
+        color: white;
+        z-index: 3;
+        position: relative;
+        transform: translateY(30px);
+        opacity: 0;
+        transition: 0.5s;
+}
+
     .hc-card:before {
         content: "";
         position: absolute;
@@ -61,6 +74,7 @@
 
         .hc-card .hc-content p {
             font-size: .9rem;
+            font-family: var(--cf-title-font);
             letter-spacing: 1px;
             margin-top: .5em;
         }
