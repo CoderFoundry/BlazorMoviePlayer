@@ -9,9 +9,8 @@
 
 html, body {
     font-family: var(--cf-body-font);
-    font-size: var(--cf-font-size);
-    height: 100%;
-    
+    font-size: var(--cf-font-size);  
+    min-height: 100%;
 }
 
 body {
