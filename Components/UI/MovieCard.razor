@@ -19,7 +19,6 @@
 
 @code {
 
-
     [Parameter]
     [EditorRequired]
     public Movie? Movie { get; set; }
@@ -29,11 +28,8 @@
 
     [Parameter]
     public EventCallback<Movie> OnPlayCallBack { get; set; }
-   
-
-   
+    
     private async Task playMovie()
-
     {
         await OnPlayCallBack.InvokeAsync(Movie);
     }
